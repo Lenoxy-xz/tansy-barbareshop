@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterController extends Controller
 {
@@ -21,7 +22,7 @@ class RegisterController extends Controller
             'username' => 'required|string|max:50|unique:users,username',
             'email'    => 'required|email|unique:users,email',
             'no_hp'    => 'required|string|max:20',
-            'password' => 'required|min:8|confirmed',
+            'password' => ['required', 'confirmed', 'max:64', Password::defaults()],
         ], [
             'nama.required'      => 'Nama lengkap wajib diisi!',
             'username.required'  => 'Username wajib diisi!',
@@ -32,6 +33,10 @@ class RegisterController extends Controller
             'no_hp.required'     => 'No. HP wajib diisi!',
             'password.required'  => 'Password wajib diisi!',
             'password.min'       => 'Password minimal 8 karakter!',
+            'password.max'       => 'Password maksimal 64 karakter!',
+            'password.mixed'     => 'Password harus mengandung huruf besar dan huruf kecil!',
+            'password.letters'   => 'Password harus mengandung huruf!',
+            'password.numbers'   => 'Password harus mengandung angka!',
             'password.confirmed' => 'Konfirmasi password tidak sesuai!',
         ]);
 

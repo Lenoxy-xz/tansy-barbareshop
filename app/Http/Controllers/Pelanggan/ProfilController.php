@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class ProfilController extends Controller
 {
@@ -37,8 +38,15 @@ class ProfilController extends Controller
     {
         $request->validate([
             'password_lama' => 'required',
-            'password_baru' => 'required|min:8|confirmed',
-        ], ['password_baru.confirmed' => 'Konfirmasi password tidak sesuai!', 'password_baru.min' => 'Password baru minimal 8 karakter!']);
+            'password_baru' => ['required', 'confirmed', 'max:64', Password::defaults()],
+        ], [
+            'password_baru.confirmed' => 'Konfirmasi password tidak sesuai!',
+            'password_baru.min'       => 'Password baru minimal 8 karakter!',
+            'password_baru.max'       => 'Password baru maksimal 64 karakter!',
+            'password_baru.password.mixed'     => 'Password baru harus mengandung huruf besar dan huruf kecil!',
+            'password_baru.password.letters'   => 'Password baru harus mengandung huruf!',
+            'password_baru.password.numbers'   => 'Password baru harus mengandung angka!',
+        ]);
         $user = Auth::user();
         if (!Hash::check($request->password_lama, $user->password)) return back()->withErrors(['password_lama' => 'Password lama tidak benar!']);
         $user->update(['password' => Hash::make($request->password_baru)]);

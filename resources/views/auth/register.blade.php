@@ -85,8 +85,10 @@
     document.getElementById('pass1').addEventListener('input', function() {
         const el = document.getElementById('passStrength');
         if (!this.value) { el.innerHTML = ''; return; }
-        if (this.value.length < 8) el.innerHTML = '<span style="color:#dc3545;">Terlalu pendek</span>';
-        else if (this.value.length < 12) el.innerHTML = '<span style="color:#fd7e14;">Cukup kuat</span>';
+        const v = this.value;
+        const ok = v.length >= 8 && /[a-z]/.test(v) && /[A-Z]/.test(v) && /[0-9]/.test(v);
+        if (!ok) el.innerHTML = '<span style="color:#dc3545;">Min. 8 karakter, huruf besar, huruf kecil, dan angka</span>';
+        else if (v.length < 12) el.innerHTML = '<span style="color:#fd7e14;">Cukup kuat</span>';
         else el.innerHTML = '<span style="color:#198754;">Kuat</span>';
     });
     document.getElementById('pass2').addEventListener('input', function() {
