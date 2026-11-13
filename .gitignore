@@ -1,0 +1,25 @@
+# Rahasia & konfigurasi lokal
+.env
+.env.*
+!.env.example
+
+# Dependency (dibuat ulang dengan composer install)
+/vendor/
+/node_modules/
+
+# Data runtime Laravel
+/storage/logs/*.log
+/storage/framework/sessions/*
+/storage/framework/views/*.php
+/storage/framework/cache/data/*
+/storage/*.key
+
+# Upload asli (data pelanggan), simpan hanya readme.txt
+/public/uploads/*/*
+!/public/uploads/*/readme.txt
+
+# Editor & sistem
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

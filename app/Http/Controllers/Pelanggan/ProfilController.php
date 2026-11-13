@@ -1,0 +1,47 @@
+<?php
+namespace App\Http\Controllers\Pelanggan;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+class ProfilController extends Controller
+{
+    public function index()
+    {
+        $user = Auth::user();
+        return view('pelanggan.profil', compact('user'));
+    }
+
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate([
+            'nama'  => 'required|string|max:100',
+            'email' => 'required|email|unique:users,email,'.$user->id_user.',id_user',
+            'no_hp' => 'required|string|max:20',
+            'foto'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+        $foto = $user->foto;
+        if ($request->hasFile('foto')) {
+            if ($foto && file_exists(public_path('uploads/profil/'.$foto))) unlink(public_path('uploads/profil/'.$foto));
+            $file = $request->file('foto');
+            $foto = uniqid().'.'.$file->getClientOriginalExtension();
+            $file->move(public_path('uploads/profil'), $foto);
+        }
+        $user->update(['nama' => $request->nama, 'email' => $request->email, 'no_hp' => $request->no_hp, 'foto' => $foto]);
+        return back()->with('success', 'Profil berhasil diperbarui!');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'password_lama' => 'required',
+            'password_baru' => 'required|min:8|confirmed',
+        ], ['password_baru.confirmed' => 'Konfirmasi password tidak sesuai!', 'password_baru.min' => 'Password baru minimal 8 karakter!']);
+        $user = Auth::user();
+        if (!Hash::check($request->password_lama, $user->password)) return back()->withErrors(['password_lama' => 'Password lama tidak benar!']);
+        $user->update(['password' => Hash::make($request->password_baru)]);
+        return back()->with('success', 'Password berhasil diubah!');
+    }
+}

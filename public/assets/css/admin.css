@@ -1,0 +1,315 @@
+/* =============================================
+   Tansy Barbershop - Admin CSS
+   ============================================= */
+
+:root {
+  --sidebar-width: 240px;
+  --topbar-height: 55px;
+  --color-dark: #1a1a1a;
+  --color-darker: #111111;
+  --color-gold: #c9a84c;
+  --color-sidebar: #161616;
+}
+
+body.admin-body {
+  font-family: "Poppins", sans-serif;
+  background-color: #0f0f0f;
+  color: #e0e0e0;
+}
+
+/* Topbar */
+.admin-topbar {
+  background: #161616;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+  height: var(--topbar-height);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+/* Wrapper */
+.admin-wrapper {
+  display: flex;
+  margin-top: var(--topbar-height);
+  min-height: calc(100vh - var(--topbar-height));
+}
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--color-sidebar);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  position: fixed;
+  top: var(--topbar-height);
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  z-index: 999;
+}
+
+.sidebar.collapsed {
+  transform: translateX(-100%);
+}
+
+.sidebar-header {
+  padding: 20px 20px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #c9a84c;
+}
+
+.sidebar-nav {
+  padding: 10px 0;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 20px;
+  color: #aaa;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.25s;
+  border-left: 3px solid transparent;
+}
+
+.sidebar-link i {
+  width: 18px;
+  text-align: center;
+}
+
+.sidebar-link:hover {
+  color: #c9a84c;
+  background: rgba(201, 168, 76, 0.07);
+  border-left-color: #c9a84c;
+}
+
+.sidebar-link.active {
+  color: #c9a84c;
+  background: rgba(201, 168, 76, 0.1);
+  border-left-color: #c9a84c;
+  font-weight: 500;
+}
+
+.sidebar-link.text-danger-soft {
+  color: #ff6b6b;
+}
+
+.sidebar-link.text-danger-soft:hover {
+  color: #ff4444;
+  background: rgba(255, 107, 107, 0.07);
+  border-left-color: #ff4444;
+}
+
+/* Content Area */
+.admin-content {
+  margin-left: var(--sidebar-width);
+  padding: 30px;
+  flex: 1;
+  min-height: calc(100vh - var(--topbar-height));
+  transition: margin-left 0.3s;
+}
+
+.admin-content.expanded {
+  margin-left: 0;
+}
+
+/* Cards */
+.admin-card {
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.stat-card-admin {
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 20px 25px;
+  transition:
+    transform 0.25s,
+    box-shadow 0.25s;
+}
+
+.stat-card-admin:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+
+.stat-number {
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.82rem;
+  color: #888;
+}
+
+/* Page Title */
+.page-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin-bottom: 5px;
+}
+
+.page-breadcrumb {
+  font-size: 0.82rem;
+  color: #666;
+}
+
+/* Tables */
+.table-dark-custom {
+  color: #e8e8e8;
+}
+
+.table-dark-custom thead th {
+  background: #222;
+  color: #c9a84c;
+  border-color: rgba(255, 255, 255, 0.07);
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table-dark-custom tbody td {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.07);
+  vertical-align: middle;
+  font-size: 0.9rem;
+  color: #e8e8e8;
+}
+
+/* Teks sekunder di dalam tabel tetap sedikit lebih redup tapi tetap terbaca */
+.table-dark-custom tbody td .text-secondary,
+.table-dark-custom tbody td small {
+  color: #adb5bd !important;
+}
+
+.table-dark-custom tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+/* Forms in admin */
+.form-control-dark {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.form-control-dark:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #c9a84c;
+  color: #e0e0e0;
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+}
+
+.form-control-dark::placeholder {
+  color: #555;
+}
+
+.form-label-dark {
+  color: #aaa;
+  font-size: 0.88rem;
+  margin-bottom: 6px;
+}
+
+/* Modal */
+.modal-dark .modal-content {
+  background: #1e1e1e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+}
+
+.modal-dark .modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-dark .modal-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* DataTables dark override */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ccc !important;
+  border-radius: 6px !important;
+  padding: 5px 10px !important;
+}
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: #888 !important;
+  font-size: 0.85rem !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: rgba(201, 168, 76, 0.1) !important;
+  color: #c9a84c !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background: #c9a84c !important;
+  color: #000 !important;
+  border-color: #c9a84c !important;
+}
+
+/* Buttons */
+.btn-gold {
+  background: linear-gradient(135deg, #c9a84c, #f0c040);
+  color: #000;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.25s;
+}
+
+.btn-gold:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  color: #000;
+}
+
+/* Select */
+select.form-control-dark option {
+  background: #1e1e1e;
+  color: #ccc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .admin-content {
+    margin-left: 0;
+    padding: 15px;
+  }
+}
