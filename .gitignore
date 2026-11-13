@@ -7,6 +7,9 @@
 /vendor/
 /node_modules/
 
+# Cache yang dibuat otomatis oleh Laravel/Composer
+/bootstrap/cache/*.php
+
 # Data runtime Laravel
 /storage/logs/*.log
 /storage/framework/sessions/*
