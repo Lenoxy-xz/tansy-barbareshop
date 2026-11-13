@@ -404,10 +404,32 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Tombol menu pelanggan: tersembunyi secara bawaan, ditampilkan di blok layar kecil di bawah.
+   Aturan dasar ini HARUS berada di atas @media agar tidak menimpa aturan layar kecil. */
+.pelanggan-menu-btn { display: none; align-items: center; justify-content: center; }
+
 /* Responsive */
 @media (max-width: 768px) {
     .hero-title { font-size: 2.2rem; }
     .section-title { font-size: 1.8rem; }
-    .pelanggan-sidebar { display: none; }
-    .pelanggan-content { margin-left: 0; }
+    .pelanggan-menu-btn { display: inline-flex; }
+    /* Sidebar pelanggan: tersembunyi di luar layar, digeser masuk dengan class .open */
+    .pelanggan-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1040;
+        height: calc(100vh - 70px);
+        overflow-y: auto;
+    }
+    .pelanggan-sidebar.open { transform: translateX(0); }
+    .pelanggan-overlay {
+        display: none;
+        position: fixed;
+        top: 70px; right: 0; bottom: 0; left: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 1035;
+    }
+    .pelanggan-overlay.show { display: block; }
+    .pelanggan-content { margin-left: 0; padding: 15px; }
 }
+
