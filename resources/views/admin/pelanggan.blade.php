@@ -28,7 +28,7 @@
                     <td>
                         <form action="{{ route('admin.pelanggan.destroy', $p->id_user) }}" method="POST" class="d-inline">
                             @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return konfirmasiHapus(event, '{{ $p->nama }}')">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" data-nama="{{ $p->nama }}" onclick="return konfirmasiHapus(event, this.dataset.nama)">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -44,7 +44,7 @@
 <script>
 function konfirmasiHapus(e, nama) {
     e.preventDefault(); const form = e.target.closest('form');
-    Swal.fire({ title:`Hapus ${nama}?`, icon:'warning', showCancelButton:true, confirmButtonColor:'#dc3545', confirmButtonText:'Ya, Hapus!', cancelButtonText:'Batal' })
+    Swal.fire({ title:`Hapus ${escapeHtml(nama)}?`, icon:'warning', showCancelButton:true, confirmButtonColor:'#dc3545', confirmButtonText:'Ya, Hapus!', cancelButtonText:'Batal' })
         .then(r => { if (r.isConfirmed) form.submit(); });
     return false;
 }

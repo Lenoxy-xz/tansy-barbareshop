@@ -1,6 +1,11 @@
 // assets/js/admin.js
 // Tansy Barbershop - Admin JavaScript
 
+// Escape karakter HTML sebelum data pengguna ditampilkan lewat SweetAlert2 (title/html dirender sebagai HTML).
+function escapeHtml(teks) {
+    return String(teks ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+}
+
 $(document).ready(function() {
 
     // Sidebar toggle

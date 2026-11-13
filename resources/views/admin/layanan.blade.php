@@ -38,7 +38,7 @@
                         <form action="{{ route('admin.layanan.destroy', $l->id_layanan) }}" method="POST" class="d-inline">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-outline-danger"
-                                    onclick="return konfirmasiHapus(event, '{{ $l->nama_layanan }}')">
+                                    data-nama="{{ $l->nama_layanan }}" onclick="return konfirmasiHapus(event, this.dataset.nama)">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -124,7 +124,7 @@ function previewFoto(input) {
 function konfirmasiHapus(e, nama) {
     e.preventDefault();
     const form = e.target.closest('form');
-    Swal.fire({ title:`Hapus ${nama}?`, text:'Data tidak bisa dikembalikan!', icon:'warning', showCancelButton:true, confirmButtonColor:'#dc3545', cancelButtonColor:'#6c757d', confirmButtonText:'Ya, Hapus!', cancelButtonText:'Batal' })
+    Swal.fire({ title:`Hapus ${escapeHtml(nama)}?`, text:'Data tidak bisa dikembalikan!', icon:'warning', showCancelButton:true, confirmButtonColor:'#dc3545', cancelButtonColor:'#6c757d', confirmButtonText:'Ya, Hapus!', cancelButtonText:'Batal' })
         .then(r => { if (r.isConfirmed) form.submit(); });
     return false;
 }
