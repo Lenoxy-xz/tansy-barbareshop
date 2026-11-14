@@ -82,7 +82,7 @@
             <div class="col-md-6 col-lg-4">
                 <div class="service-card">
                     @if($l->foto)
-                        <img src="{{ asset('uploads/layanan/'.$l->foto) }}" class="card-img-top" alt="{{ $l->nama_layanan }}" style="height:200px;object-fit:cover;">
+                        <img src="{{ route('foto.show', $l->foto) }}" class="card-img-top" alt="{{ $l->nama_layanan }}" style="height:200px;object-fit:cover;">
                     @else
                         <div class="service-img-placeholder"><i class="fas fa-cut"></i></div>
                     @endif

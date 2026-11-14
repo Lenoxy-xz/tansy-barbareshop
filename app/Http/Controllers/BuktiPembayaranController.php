@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pembayaran;
+use App\Support\Berkas;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -18,9 +19,14 @@ class BuktiPembayaranController extends Controller
         abort_unless($pembayaran->bukti_pembayaran, 404);
 
         $nama = basename($pembayaran->bukti_pembayaran);          // cegah path traversal
+        $berkas = Berkas::ambil($nama, ['pembayaran']);
+        if ($berkas) {
+            return Berkas::respons($berkas, 'private, max-age=0, must-revalidate');
+        }
+
+        // Berkas lama (sebelum disimpan di database)
         $path = storage_path('app/pembayaran/'.$nama);
         if (!is_file($path)) {
-            // Berkas lama (sebelum dipindah ke storage privat), masih bisa dilihat lewat route ini.
             $path = public_path('uploads/pembayaran/'.$nama);
             abort_unless(is_file($path), 404);
         }

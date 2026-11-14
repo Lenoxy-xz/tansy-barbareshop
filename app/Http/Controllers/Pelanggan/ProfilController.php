@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Pelanggan;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Support\Berkas;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
@@ -25,10 +26,8 @@ class ProfilController extends Controller
         ]);
         $foto = $user->foto;
         if ($request->hasFile('foto')) {
-            if ($foto && file_exists(public_path('uploads/profil/'.$foto))) unlink(public_path('uploads/profil/'.$foto));
-            $file = $request->file('foto');
-            $foto = $file->hashName();
-            $file->move(public_path('uploads/profil'), $foto);
+            Berkas::hapus($foto);
+            $foto = Berkas::simpan($request->file('foto'), 'profil');
         }
         $user->update(['nama' => $request->nama, 'email' => $request->email, 'no_hp' => $request->no_hp, 'foto' => $foto]);
         return back()->with('success', 'Profil berhasil diperbarui!');

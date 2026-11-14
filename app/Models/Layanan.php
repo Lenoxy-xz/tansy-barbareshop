@@ -9,5 +9,5 @@ class Layanan extends Model {
     protected $casts = ['harga' => 'decimal:2'];
     public function bookings() { return $this->hasMany(Booking::class, 'id_layanan', 'id_layanan'); }
     public function getHargaFormatAttribute(): string { return 'Rp '.number_format($this->harga, 0, ',', '.'); }
-    public function getFotoUrlAttribute(): ?string { return $this->foto ? asset('uploads/layanan/'.$this->foto) : null; }
+    public function getFotoUrlAttribute(): ?string { return $this->foto ? route('foto.show', $this->foto) : null; }
 }

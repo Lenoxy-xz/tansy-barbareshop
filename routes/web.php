@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BuktiPembayaranController;
+use App\Http\Controllers\BerkasController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController  as AdminDashboard;
@@ -30,6 +31,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'register'])->name('register.post')->middleware('throttle:register');
 });
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+// Foto layanan dan foto profil (publik, nama berkas acak)
+Route::get('/foto/{nama}', [BerkasController::class, 'foto'])->where('nama', '[A-Za-z0-9._-]+')->name('foto.show');
 // Bukti pembayaran: hanya admin dan pemilik booking (dicek di controller)
 Route::get('/bukti-pembayaran/{pembayaran}', [BuktiPembayaranController::class, 'show'])->name('bukti.show')->middleware('auth');
 

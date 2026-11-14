@@ -15,7 +15,7 @@
                     <td>{{ $i+1 }}</td>
                     <td>
                         @if($p->foto)
-                            <img src="{{ asset('uploads/profil/'.$p->foto) }}" class="rounded-circle" style="width:40px;height:40px;object-fit:cover;">
+                            <img src="{{ route('foto.show', $p->foto) }}" class="rounded-circle" style="width:40px;height:40px;object-fit:cover;">
                         @else
                             <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center" style="width:40px;height:40px;"><i class="fas fa-user text-dark small"></i></div>
                         @endif

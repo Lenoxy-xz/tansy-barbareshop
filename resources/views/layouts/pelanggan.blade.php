@@ -40,7 +40,7 @@
             <div class="d-flex align-items-center gap-3">
                 <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center" style="width:45px;height:45px;flex-shrink:0;">
                     @if(auth()->user()->foto)
-                        <img src="{{ asset('uploads/profil/'.auth()->user()->foto) }}" class="rounded-circle w-100 h-100" style="object-fit:cover;">
+                        <img src="{{ route('foto.show', auth()->user()->foto) }}" class="rounded-circle w-100 h-100" style="object-fit:cover;">
                     @else
                         <i class="fas fa-user text-dark"></i>
                     @endif

@@ -18,7 +18,7 @@
                     <td>{{ $i+1 }}</td>
                     <td>
                         @if($l->foto)
-                            <img src="{{ asset('uploads/layanan/'.$l->foto) }}" class="rounded" style="width:60px;height:45px;object-fit:cover;">
+                            <img src="{{ route('foto.show', $l->foto) }}" class="rounded" style="width:60px;height:45px;object-fit:cover;">
                         @else
                             <div class="rounded d-flex align-items-center justify-content-center" style="width:60px;height:45px;background:#2a2a2a;">
                                 <i class="fas fa-cut text-warning"></i>
@@ -112,7 +112,7 @@ function editLayanan(data) {
     document.getElementById('inputDeskripsi').value = data.deskripsi || '';
     document.getElementById('inputHarga').value = data.harga;
     document.getElementById('inputEstimasi').value = data.estimasi_waktu;
-    document.getElementById('fotoPreview').innerHTML = data.foto ? `<img src="/uploads/layanan/${data.foto}" class="rounded" style="height:80px;object-fit:cover;">` : '';
+    document.getElementById('fotoPreview').innerHTML = data.foto ? `<img src="/foto/${data.foto}" class="rounded" style="height:80px;object-fit:cover;">` : '';
 }
 function previewFoto(input) {
     if (input.files && input.files[0]) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Layanan;
+use App\Support\Berkas;
 use Illuminate\Http\Request;
 
 class LayananController extends Controller
@@ -25,9 +26,7 @@ class LayananController extends Controller
 
         $foto = null;
         if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            $foto = $file->hashName();
-            $file->move(public_path('uploads/layanan'), $foto);
+            $foto = Berkas::simpan($request->file('foto'), 'layanan');
         }
 
         Layanan::create([
@@ -54,13 +53,8 @@ class LayananController extends Controller
 
         $foto = $layanan->foto;
         if ($request->hasFile('foto')) {
-            // Hapus foto lama
-            if ($foto && file_exists(public_path('uploads/layanan/'.$foto))) {
-                unlink(public_path('uploads/layanan/'.$foto));
-            }
-            $file = $request->file('foto');
-            $foto = $file->hashName();
-            $file->move(public_path('uploads/layanan'), $foto);
+            Berkas::hapus($foto);   // hapus foto lama
+            $foto = Berkas::simpan($request->file('foto'), 'layanan');
         }
 
         $layanan->update([
@@ -82,9 +76,7 @@ class LayananController extends Controller
             return back()->with('error', 'Layanan tidak bisa dihapus karena masih ada booking!');
         }
 
-        if ($layanan->foto && file_exists(public_path('uploads/layanan/'.$layanan->foto))) {
-            unlink(public_path('uploads/layanan/'.$layanan->foto));
-        }
+        Berkas::hapus($layanan->foto);
 
         $layanan->delete();
         return back()->with('success', 'Layanan berhasil dihapus!');

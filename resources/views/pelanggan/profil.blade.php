@@ -15,7 +15,7 @@
                 @csrf
                 <div class="text-center mb-4">
                     @if($user->foto)
-                        <img src="{{ asset('uploads/profil/'.$user->foto) }}" class="rounded-circle mb-2" id="fotoPreview"
+                        <img src="{{ route('foto.show', $user->foto) }}" class="rounded-circle mb-2" id="fotoPreview"
                              style="width:90px;height:90px;object-fit:cover;border:3px solid #c9a84c;">
                     @else
                         <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center mx-auto mb-2" id="fotoDefault" style="width:90px;height:90px;">
@@ -86,7 +86,7 @@
             <h6 class="text-warning mb-3"><i class="fas fa-info-circle me-2"></i>Info Akun</h6>
             <div class="text-center mb-4">
                 @if($user->foto)
-                    <img src="{{ asset('uploads/profil/'.$user->foto) }}" class="rounded-circle" style="width:80px;height:80px;object-fit:cover;border:3px solid #c9a84c;">
+                    <img src="{{ route('foto.show', $user->foto) }}" class="rounded-circle" style="width:80px;height:80px;object-fit:cover;border:3px solid #c9a84c;">
                 @else
                     <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center mx-auto" style="width:80px;height:80px;">
                         <i class="fas fa-user text-dark fs-2"></i>
