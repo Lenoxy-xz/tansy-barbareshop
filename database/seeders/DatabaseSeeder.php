@@ -5,17 +5,37 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Users
+        // Idempoten: jangan menimpa/menggandakan data jika database sudah terisi (aman dijalankan tiap start container).
+        if (DB::table('users')->exists()) {
+            $this->command?->info('Database sudah berisi data, seeder dilewati.');
+            return;
+        }
+
+        // Password akun admin dan akun uji dibaca dari environment variable (tidak ditulis di kode/repository).
+        $adminPw = env('SEED_ADMIN_PASSWORD');
+        $userPw  = env('SEED_USER_PASSWORD');
+        foreach (['SEED_ADMIN_PASSWORD' => $adminPw, 'SEED_USER_PASSWORD' => $userPw] as $nama => $nilai) {
+            // Wajib memenuhi kebijakan password aplikasi (min. 8, huruf besar/kecil, angka).
+            $v = Validator::make(['p' => $nilai], ['p' => ['required', Password::defaults()]]);
+            if ($v->fails()) {
+                throw new \RuntimeException("$nama belum diisi atau terlalu lemah (min. 8 karakter, huruf besar, huruf kecil, dan angka).");
+            }
+        }
+
+        // Users. Akun andi99 dan rizki007 hanya data demo untuk laporan: passwordnya acak dan tidak diketahui siapa pun.
         DB::table('users')->insert([
-            ['nama' => 'Administrator', 'username' => 'admin',    'email' => 'admin@tansybarbershop.com', 'no_hp' => '081234567890', 'password' => Hash::make('password'), 'role' => 'admin',     'foto' => null],
-            ['nama' => 'Budi Santoso',  'username' => 'budi123',  'email' => 'budi@gmail.com',            'no_hp' => '081111111111', 'password' => Hash::make('password'), 'role' => 'pelanggan', 'foto' => null],
-            ['nama' => 'Andi Prasetyo', 'username' => 'andi99',   'email' => 'andi@gmail.com',            'no_hp' => '082222222222', 'password' => Hash::make('password'), 'role' => 'pelanggan', 'foto' => null],
-            ['nama' => 'Rizki Hidayat', 'username' => 'rizki007', 'email' => 'rizki@gmail.com',           'no_hp' => '083333333333', 'password' => Hash::make('password'), 'role' => 'pelanggan', 'foto' => null],
+            ['nama' => 'Administrator', 'username' => env('SEED_ADMIN_USERNAME', 'admin'), 'email' => 'admin@tansybarbershop.com', 'no_hp' => '081234567890', 'password' => Hash::make($adminPw),          'role' => 'admin',     'foto' => null],
+            ['nama' => 'Budi Santoso',  'username' => 'budi123',  'email' => 'budi@gmail.com',  'no_hp' => '081111111111', 'password' => Hash::make($userPw),          'role' => 'pelanggan', 'foto' => null],
+            ['nama' => 'Andi Prasetyo', 'username' => 'andi99',   'email' => 'andi@gmail.com',  'no_hp' => '082222222222', 'password' => Hash::make(Str::random(40)), 'role' => 'pelanggan', 'foto' => null],
+            ['nama' => 'Rizki Hidayat', 'username' => 'rizki007', 'email' => 'rizki@gmail.com', 'no_hp' => '083333333333', 'password' => Hash::make(Str::random(40)), 'role' => 'pelanggan', 'foto' => null],
         ]);
 
         // Layanan
