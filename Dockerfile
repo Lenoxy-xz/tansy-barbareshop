@@ -1,31 +1,53 @@
-FROM php:8.3-apache
+# Aplikasi Laravel di Vercel (container-backed Function) dengan FrankenPHP.
+# Mengikuti panduan resmi: https://vercel.com/kb/guide/laravel-php-with-docker
+FROM dunglas/frankenphp:1-php8.4-bookworm AS base
 
-# Ekstensi PHP: PostgreSQL (Neon), MySQL (opsional), zip. mbstring/xml/tokenizer sudah bawaan image.
-RUN apt-get update \
- && apt-get install -y --no-install-recommends libpq-dev libzip-dev unzip \
- && docker-php-ext-install pdo_pgsql pdo_mysql zip \
- && a2enmod rewrite headers \
- && a2dissite 000-default \
- && rm -rf /var/lib/apt/lists/*
+# pdo_pgsql untuk Neon (PostgreSQL)
+RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
+    && install-php-extensions intl zip pdo_pgsql
+
+WORKDIR /app
+
+FROM base AS dependencies
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-WORKDIR /var/www/html
-
-# Dependency dulu (memanfaatkan cache layer Docker); tanpa paket dev
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --no-interaction
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --no-progress \
+    --no-scripts \
+    --optimize-autoloader \
+    --prefer-dist
 
 COPY . .
-RUN composer dump-autoload --no-dev --optimize --no-scripts \
- && rm -f bootstrap/cache/*.php
+RUN mkdir -p \
+        storage/framework/cache \
+        storage/framework/sessions \
+        storage/framework/views \
+        storage/logs \
+        bootstrap/cache \
+    && composer dump-autoload --no-dev --classmap-authoritative
 
-# Konfigurasi Apache dan entrypoint
-COPY docker/vhost.conf /etc/apache2/sites-available/tansy.conf
-RUN a2ensite tansy \
- && sed -i '/^Listen 80$/d;/^\s*Listen 443$/d' /etc/apache2/ports.conf \
- && sed -i 's/\r$//' docker/entrypoint.sh /etc/apache2/sites-available/tansy.conf \
- && chmod +x docker/entrypoint.sh
+FROM base AS runtime
 
-ENV PORT=8080 APP_ENV=production APP_DEBUG=false LOG_CHANNEL=stderr
-EXPOSE 8080
-ENTRYPOINT ["/var/www/html/docker/entrypoint.sh"]
+COPY --from=dependencies --chown=www-data:www-data /app /app
+COPY --chown=www-data:www-data Caddyfile /etc/frankenphp/Caddyfile
+
+RUN setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp \
+    && chown -R www-data:www-data /config/caddy /data/caddy
+
+# Sesi dan cache disimpan di database (instance Vercel tidak berbagi disk).
+# Nilai ini bisa ditimpa lewat Environment Variables di dashboard Vercel.
+ENV PORT=80 \
+    APP_ENV=production \
+    APP_DEBUG=false \
+    LOG_CHANNEL=stderr \
+    CACHE_DRIVER=database \
+    CACHE_STORE=database \
+    SESSION_DRIVER=database \
+    QUEUE_CONNECTION=sync
+
+USER www-data
+
+CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]

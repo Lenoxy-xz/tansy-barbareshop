@@ -1,10 +1,12 @@
 .git
 .gitignore
+.gitattributes
 .env
 .env.*
 !.env.example
 vendor
 node_modules
+tests
 tests_keamanan
 bootstrap/cache/*.php
 storage/logs/*
@@ -13,7 +15,6 @@ storage/framework/views/*
 storage/framework/cache/data/*
 storage/app/pembayaran/*
 public/uploads/*/*
-!public/uploads/*/readme.txt
+database/database.sqlite
 *.md
-Dockerfile
-.dockerignore
+vercel.json
