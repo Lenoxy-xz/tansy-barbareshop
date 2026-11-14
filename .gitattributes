@@ -1,0 +1,4 @@
+# Berkas yang dipakai di Linux/Docker harus selalu berakhiran baris LF (bukan CRLF Windows)
+Dockerfile text eol=lf
+docker/* text eol=lf
+*.sh text eol=lf
