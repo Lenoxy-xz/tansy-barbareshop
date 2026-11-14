@@ -27,7 +27,7 @@ class ProfilController extends Controller
         if ($request->hasFile('foto')) {
             if ($foto && file_exists(public_path('uploads/profil/'.$foto))) unlink(public_path('uploads/profil/'.$foto));
             $file = $request->file('foto');
-            $foto = uniqid().'.'.$file->getClientOriginalExtension();
+            $foto = $file->hashName();
             $file->move(public_path('uploads/profil'), $foto);
         }
         $user->update(['nama' => $request->nama, 'email' => $request->email, 'no_hp' => $request->no_hp, 'foto' => $foto]);

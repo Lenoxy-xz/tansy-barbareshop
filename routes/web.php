@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\BuktiPembayaranController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController  as AdminDashboard;
@@ -29,6 +30,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'register'])->name('register.post')->middleware('throttle:register');
 });
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+// Bukti pembayaran: hanya admin dan pemilik booking (dicek di controller)
+Route::get('/bukti-pembayaran/{pembayaran}', [BuktiPembayaranController::class, 'show'])->name('bukti.show')->middleware('auth');
 
 // ── Admin Routes ──────────────────────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {

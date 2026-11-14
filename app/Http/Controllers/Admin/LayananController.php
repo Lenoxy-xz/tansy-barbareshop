@@ -26,7 +26,7 @@ class LayananController extends Controller
         $foto = null;
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
-            $foto = uniqid().'.'.$file->getClientOriginalExtension();
+            $foto = $file->hashName();
             $file->move(public_path('uploads/layanan'), $foto);
         }
 
@@ -59,7 +59,7 @@ class LayananController extends Controller
                 unlink(public_path('uploads/layanan/'.$foto));
             }
             $file = $request->file('foto');
-            $foto = uniqid().'.'.$file->getClientOriginalExtension();
+            $foto = $file->hashName();
             $file->move(public_path('uploads/layanan'), $foto);
         }
 

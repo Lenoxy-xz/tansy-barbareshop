@@ -32,7 +32,7 @@
                         <span class="badge bg-{{ $p->status_badge }} text-{{ $p->status_pembayaran==='menunggu_verifikasi'?'dark':'white' }}">{{ $p->status_label }}</span>
                         @if($p->bukti_pembayaran)
                         <div class="mt-2">
-                            <a href="{{ asset('uploads/pembayaran/'.$p->bukti_pembayaran) }}" target="_blank" class="btn btn-sm btn-outline-info">
+                            <a href="{{ route('bukti.show', $p->id_pembayaran) }}" target="_blank" class="btn btn-sm btn-outline-info">
                                 <i class="fas fa-image me-1"></i>Lihat Bukti
                             </a>
                         </div>

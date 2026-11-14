@@ -18,12 +18,15 @@ class PembayaranController extends Controller
     {
         $request->validate(['id_pembayaran' => 'required|exists:pembayaran,id_pembayaran', 'bukti' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048']);
         $p = Pembayaran::whereHas('booking', fn($q) => $q->where('id_user', Auth::id()))->findOrFail($request->id_pembayaran);
-        if ($p->bukti_pembayaran && file_exists(public_path('uploads/pembayaran/'.$p->bukti_pembayaran))) {
-            unlink(public_path('uploads/pembayaran/'.$p->bukti_pembayaran));
+        if ($p->bukti_pembayaran) {
+            foreach ([storage_path('app/pembayaran/'), public_path('uploads/pembayaran/')] as $dir) {
+                $lama = $dir.basename($p->bukti_pembayaran);
+                if (is_file($lama)) unlink($lama);
+            }
         }
         $file = $request->file('bukti');
-        $filename = uniqid().'.'.$file->getClientOriginalExtension();
-        $file->move(public_path('uploads/pembayaran'), $filename);
+        $filename = $file->hashName();   // nama acak + ekstensi dari isi file, bukan dari klien
+        $file->move(storage_path('app/pembayaran'), $filename);
         $p->update(['bukti_pembayaran' => $filename, 'status_pembayaran' => 'menunggu_verifikasi', 'tanggal_pembayaran' => today()]);
         return back()->with('success', 'Bukti pembayaran berhasil diupload! Menunggu verifikasi admin.');
     }

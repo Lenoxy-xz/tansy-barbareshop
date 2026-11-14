@@ -39,7 +39,7 @@
                     <td class="text-warning fw-semibold">{{ $t->total_format }}</td>
                     <td>
                         @if($t->bukti_pembayaran)
-                            <a href="{{ asset('uploads/pembayaran/'.$t->bukti_pembayaran) }}" target="_blank" class="btn btn-sm btn-outline-info">
+                            <a href="{{ route('bukti.show', $t->id_pembayaran) }}" target="_blank" class="btn btn-sm btn-outline-info">
                                 <i class="fas fa-image me-1"></i>Lihat
                             </a>
                         @else
