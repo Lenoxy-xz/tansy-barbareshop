@@ -15,7 +15,10 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNavbar" style="background:rgba(10,10,10,0.97);border-bottom:1px solid rgba(201,168,76,0.2);padding:10px 0;">
     <div class="container-fluid px-4">
-        <a class="navbar-brand fw-bold" href="{{ route('home') }}">
+        <button type="button" class="btn btn-sm btn-outline-warning pelanggan-menu-btn me-2" id="pelangganSidebarToggle" aria-label="Buka menu" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
+        <a class="navbar-brand fw-bold me-auto" href="{{ route('home') }}">
             <i class="fas fa-cut me-2 text-warning"></i>Tansy <span class="text-warning">Barbershop</span>
         </a>
         <div class="d-flex align-items-center gap-3">
@@ -31,7 +34,8 @@
 </nav>
 
 <div class="pelanggan-wrapper">
-    <div class="pelanggan-sidebar">
+    <div class="pelanggan-overlay" id="pelangganOverlay"></div>
+    <div class="pelanggan-sidebar" id="pelangganSidebar">
         <div class="p-4 border-bottom" style="border-color:rgba(255,255,255,0.08) !important;">
             <div class="d-flex align-items-center gap-3">
                 <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center" style="width:45px;height:45px;flex-shrink:0;">

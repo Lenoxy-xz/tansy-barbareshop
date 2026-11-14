@@ -8,12 +8,30 @@ function escapeHtml(teks) {
 
 $(document).ready(function() {
 
-    // Sidebar toggle
+    // Sidebar toggle.
+    // Layar kecil (<= 768px): sidebar disembunyikan secara bawaan dan dibuka dengan class .open.
+    // Layar besar: sidebar tampil dan bisa disembunyikan dengan class .collapsed.
+    const layarKecil = () => window.matchMedia('(max-width: 768px)').matches;
+
     $('#sidebarToggle').on('click', function() {
         const sidebar = document.getElementById('sidebar');
         const content = document.getElementById('adminContent');
-        sidebar.classList.toggle('collapsed');
-        if (content) content.classList.toggle('expanded');
+        if (!sidebar) return;
+        if (layarKecil()) {
+            sidebar.classList.toggle('open');
+        } else {
+            sidebar.classList.toggle('collapsed');
+            if (content) content.classList.toggle('expanded');
+        }
+    });
+
+    // Layar kecil: tutup sidebar saat area di luar sidebar disentuh.
+    $(document).on('click', function(e) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && layarKecil() && sidebar.classList.contains('open')
+            && !$(e.target).closest('#sidebar, #sidebarToggle').length) {
+            sidebar.classList.remove('open');
+        }
     });
 
     // Inisialisasi DataTables untuk semua tabel dengan class .dt-table

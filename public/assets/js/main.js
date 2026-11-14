@@ -3,6 +3,26 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 
+    // Sidebar pelanggan di layar kecil: tombol buka/tutup + overlay
+    const pSidebar = document.getElementById('pelangganSidebar');
+    const pToggle  = document.getElementById('pelangganSidebarToggle');
+    const pOverlay = document.getElementById('pelangganOverlay');
+    if (pSidebar && pToggle) {
+        const tutupSidebar = function() {
+            pSidebar.classList.remove('open');
+            if (pOverlay) pOverlay.classList.remove('show');
+            pToggle.setAttribute('aria-expanded', 'false');
+        };
+        pToggle.addEventListener('click', function() {
+            const terbuka = pSidebar.classList.toggle('open');
+            if (pOverlay) pOverlay.classList.toggle('show', terbuka);
+            pToggle.setAttribute('aria-expanded', String(terbuka));
+        });
+        if (pOverlay) pOverlay.addEventListener('click', tutupSidebar);
+        pSidebar.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', tutupSidebar); });
+        window.addEventListener('resize', function() { if (window.innerWidth > 768) tutupSidebar(); });
+    }
+
     // Navbar scroll effect
     const navbar = document.getElementById('mainNavbar');
     if (navbar) {
