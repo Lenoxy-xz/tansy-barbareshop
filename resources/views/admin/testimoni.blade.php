@@ -31,7 +31,7 @@
                     <td>{{ $i+1 }}</td>
                     <td>
                         <div class="fw-semibold small">{{ $t->user->nama }}</div>
-                        <div class="text-secondary" style="font-size:0.75rem;">@{{ $t->user->username }}</div>
+                        <div class="text-secondary" style="font-size:0.75rem;">&#64;{{ $t->user->username }}</div>
                     </td>
                     <td>
                         <div class="text-warning" style="font-size:0.85rem;">
