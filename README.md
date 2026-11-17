@@ -129,7 +129,7 @@ Ringkasan berikut; **bukti lengkap berupa tangkapan layar ada pada laporan tugas
 | Cookie sesi | Tanpa tanda Secure | `HttpOnly`, `Secure`, `SameSite=Lax` |
 | Dependency (`composer audit`) | 28 advisory pada 8 paket | Tidak ada advisory |
 | SQL injection | Query berparameter, tidak ada query mentah; hasil uji manual pada laporan | |
-| Secret di riwayat Git | `.env` masuk `.gitignore` sejak commit pertama; hasil pengecekan pada laporan | |
+| Secret di riwayat Git | Tidak dicek sebelumnya | Lolos (`.env` tidak pernah ter-commit; pencarian pola secret hanya menemukan contoh dan placeholder) |
 
 Skrip uji otomatis tersedia di `tests_keamanan/uji_keamanan.py` (hanya library standar Python). Jalankan hanya terhadap aplikasi milik sendiri. Contoh pada Windows CMD (ganti nilai dengan akun milik sendiri):
 
